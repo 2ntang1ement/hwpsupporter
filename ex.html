@@ -1,263 +1,124 @@
-@font-face {
-    font-family: 'GMarketSans';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-    font-weight: 500;
-    font-display: swap;
-}
+<!DOCTYPE html>
+<html lang="ko">
 
-body {
-    font-family: 'GMarketSans', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ffffff;
-}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문서 작성 프로그램</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-.timebox{
-    position:absolute;
-    width: 240px;
-    height: 50px;
-    background-color:#595959;
-    padding: 5px;
-    z-index: 1;
-    left: 10px;
-    top: 40px;
-    border-radius: 10px;
-    color: #595959;
-}
+<body>
+    <div id="sidebar">
+        <input type="checkbox" id="popupBtn">
+        <label for="popupBtn">
+            팝업
+        </label>
+        <div id="layer">
+            <div id="popup">
+                <h2>
+                    제목
+                    <label for="popupBtn">X</label>
+                </h2>
+                <!--기존 코드 시작-->
+                <section id="wrap">
+                    <aside id="side">
+                        <div class="naljasetting">날짜 설정하기</div>
+                        <div class="timer"><span id="timeLeft">00:00:00</span></div>
 
-.sidebar {
-    position: fixed;
-    z-index: -1;
-    left: 10px;
-    border-radius: 10px;
-    width: 250px;
-    height: 1000px;
-    background-color: #F3F2F8;
-}
+                        <nav class="nav">
+                            <ul>
+                                <li><a href="#">서론</a>
+                                    <ul class="intro">
+                                        <li><input type="checkbox"> 제목</li>
+                                        <li><input type="checkbox"> 주제 선정 계기</li>
+                                        <li><input type="checkbox"> 관련 단원</li>
+                                    </ul>
+                                </li>
 
-.h2 {
-    display: inline;
-}
+                                <li><a href="#">본론</a>
+                                    <ul class="mainbody">
+                                        <li><input type="checkbox"> 사용된 개념 설명</li>
+                                        <li><input type="checkbox"> 탐구 내용</li>
+                                        <li><input type="checkbox"> 실생활 적용, 활용</li>
+                                        <li><input type="checkbox"> 탐구 요약</li>
+                                    </ul>
+                                </li>
 
-.intro,
-.mainbody,
-.conclu {
-    list-style-type: none;
-    margin-left: -50px;
-    line-height: 30px;
-    font-size: 12px;
-}
+                                <li><a href="#">결론</a>
+                                    <ul class="conclu">
+                                        <li><input type="checkbox"> 어려웠던 점과 극복 과정</li>
+                                        <li><input type="checkbox"> 깨닫게 된 점</li>
+                                        <li><input type="checkbox"> 확장 탐구 및 다짐</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </aside>
+                    <section id="content">
+            </div>
+        </div>
+    </div>
+        <section id="content">
+            <div class="topbar">
+                <!-- 문서 제목 -->
+                <div class="namebar">
+                    <input type="text" id="docTitle" placeholder="문서 제목을 입력하세요" 
+                        style="border: none; background: transparent;">
+                </div>
 
-a {
-    text-decoration: none;
-}
+            </div>
+    <img src="BonuSlogo.png">    
 
+            <nav class="skillbar">
+            
+            </nav>
 
-.nav {
-    position: fixed;
-    top: 140px;
-}
-
-[type="checkbox"] {
-    width: 12px;
-    height: 12px;
-    accent-color: #404040;
-}
-
-.topbar {
-    margin-right: 10px;
-    background-color: #404040;
-    height: 100px;
-    width: 1250px;
-    position: fixed;
-    top: 0;
-    left: 270px;
-    border-radius: 10px;
-}
-
-.namebar{
-    margin-left: 50px;
-    margin-top: 10px;
-    font-size: 30px;
-}
-
-[type="text"] {
-    margin-left: 10px;
-    margin-top: 7px;
-    border: 0;
-    border-radius: 10px;
-    width: 300px;
-    height: 30px;
-}
+        </section>
+    </section>
+    <script>
+        const submitTimeInput = document.getElementById("submitTime");
+        const setTimeBtn = document.getElementById("setTimeBtn");
+        const stopTimeBtn = document.getElementById("stopTimeBtn");
+        const timeLeftDisplay = document.getElementById("timeLeft");
+        let countdownInterval;
 
 
+            // 기존 타이머 있으면 제거
+            if (countdownInterval) clearInterval(countdownInterval);
 
-.skillbar {
-    background-color: #3B3838;
-    position: fixed;
-    top: 70px;
-    left: 270px;
-    height: 40px;
-    width: 1250px;
-    border-radius: 15px;
+            timeLeftDisplay.style.color = "black";
 
-}
+            countdownInterval = setInterval(() => {
+                const now = new Date();
+                const diff = selectedTime - now;
 
-.main {
-    background-color: white;
-    margin-right: 30px;
-    position: fixed;
-    top: 200px;
-    left: 400px;
-    height: 1000px;
-    width: 1000px;
-    border: 2px solid gray;
-}
+                if (diff <= 0) {
+                    clearInterval(countdownInterval);
+                    timeLeftDisplay.textContent = "제출 마감!";
+                    timeLeftDisplay.style.color = "red";
+                    return;
+                }
 
-.document-area {
-    position: absolute;
-    left: 300px;
-    top: 100px;
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-}
+                timeLeftDisplay.textContent =
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
 
-.file-up .upload-name {
-    display: inline-block;
-    margin-top: 10px;
-    margin-left: 10px;
-    height: 30px;
-    width: 155px;
-    border: 0;
-    border-radius: 10px;
-    vertical-align: middle;
-    border: 1px solid #dddddd;
-    color: #999999;
-    box-shadow: 2px 2px 20px 1px rgba(159, 187, 168, 0.479);
-}
+        stopTimeBtn.addEventListener("click", () => {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            submitTimeInput.value = "";
+            timeLeftDisplay.textContent = "--:--:--";
+            timeLeftDisplay.style.color = "black";
+        });
 
-.file-up input[type="file"] {
-    position: absolute;
-    width: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 0;
-}
+    </script>
+</body>
 
-.file-up label {
-    position: relative;
-    text-align: center;
-    top: -37px;
-    margin-left: 176px;
-    display: inline-block;
-    padding: 1px 4px;
-    width: 50px;
-    height: 30px;
-    font-size: 10px;
-    text-shadow: 0px 1px 0px #1570cd;
-    cursor: pointer;
-    transition: 0.3s;
-    background-color: rgb(230, 242, 228);
-    color: black;
-    border: none;
-    border-radius: 10px;
-}
-
-.btn-open:hover {
-    box-shadow:
-        -7px -7px 20px 0px #fff9,
-        -4px -4px 5px 0px #fff9,
-        7px 7px 20px 0px #0002,
-        4px 4px 5px 0px #0001;
-}
-
-.timer{
-    position: relative;
-    margin-top: 40px;
-    z-index: 3;
-    font-size: 35px;
-    margin-left: 55px;
-    color: white;
-    margin-top: 26px;
-}
-
-.naljasetting{
-    position:absolute;
-    width: 240px;
-    height: 20px;
-    background-color:#BFBFBF;
-    padding: 5px;
-    z-index: 2;
-    left: 10px;
-    top: 4px;
-    border-radius: 10px;
-    color: black;
-    text-align : center;
-}
-
-#sidebar {
-    margin: 0;
-    padding: 0;
-
-    ul,
-    li {
-        list-style: none;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-}
-
-
-#popupBtn {
-    display: none;
-}
-
-#popupBtn+label {
-    display: inline-block;
-    padding: 7px 14px;
-    cursor: pointer;
-    background-color: black;
-    color: #fff;
-    border-radius: 5px;
-}
-
-#layer {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-#layer>#popup {
-    position: absolute;
-    float: left;
-    padding: 0;
-    box-sizing: border-box;
-    border-radius: 15px;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 1000px;
-    background: #f3f2f8;
-}
-
-#layer>#popup>h2 {
-    margin-bottom: 15px;
-    margin-left: 10px;
-    color: #f3f2f8;
-}
-
-#layer>#popup>h2>label {
-    float: right;
-    margin-right: 20px;
-    color: black;
-}
-
-#popupBtn:checked+label+#layer {
-    display: block;
-}
+</html>
