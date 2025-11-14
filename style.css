@@ -9,30 +9,30 @@ body {
     font-family: 'GMarketSans', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f3f2f8;
+    background-color: #ffffff;
 }
 
-.sidebarh {
-    position: fixed;
-    top: 10px;
+.timebox{
+    position:absolute;
+    width: 240px;
+    height: 50px;
+    background-color:#595959;
+    padding: 5px;
+    z-index: 1;
     left: 10px;
+    top: 40px;
     border-radius: 10px;
-    width: 250px;
-    height: 100px;
-    background-color: #c4eda1;
-    box-shadow: 2px 2px 20px 1px rgb(159, 187, 168);
+    color: #595959;
 }
 
 .sidebar {
     position: fixed;
     z-index: -1;
-    top: 110px;
     left: 10px;
     border-radius: 10px;
     width: 250px;
-    height: 500px;
-    background-color: #f3f2f8;
-    box-shadow: 2px 2px 20px 1px rgba(159, 187, 168, 0.479);
+    height: 1000px;
+    background-color: #F3F2F8;
 }
 
 .h2 {
@@ -45,6 +45,7 @@ body {
     list-style-type: none;
     margin-left: -50px;
     line-height: 30px;
+    font-size: 12px;
 }
 
 a {
@@ -58,20 +59,26 @@ a {
 }
 
 [type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    accent-color: #c4eda1;
+    width: 12px;
+    height: 12px;
+    accent-color: #404040;
 }
 
 .topbar {
     margin-right: 10px;
-    background-color: #004c99;
-    height: 50px;
+    background-color: #404040;
+    height: 100px;
     width: 1250px;
     position: fixed;
     top: 0;
     left: 270px;
     border-radius: 10px;
+}
+
+.namebar{
+    margin-left: 50px;
+    margin-top: 10px;
+    font-size: 30px;
 }
 
 [type="text"] {
@@ -83,39 +90,12 @@ a {
     height: 30px;
 }
 
-#saveBtn {
-    float: right;
-    margin-right: 20px;
-    margin-top: 7px;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 100px;
-    height: 30px;
-    background: linear-gradient(to right, white, #004c99);
-    color: #f3f2f8;
-    border: none;
-    box-shadow: inset 0px 0px 5px grey;
-    transition: all 0.3s ease;
-}
-
-#saveBtn:hover {
-    width: 110px;
-    height: 35px;
-    transition: all 0.3s ease;
-}
-
-#saveBtn:active {
-    width: 110px;
-    height: 35px;
-    color: #004c99;
-    transition: all 0.3s ease;
-}
 
 
 .skillbar {
-    background-color: #0082e5;
+    background-color: #3B3838;
     position: fixed;
-    top: 50px;
+    top: 70px;
     left: 270px;
     height: 40px;
     width: 1250px;
@@ -189,4 +169,95 @@ a {
         -4px -4px 5px 0px #fff9,
         7px 7px 20px 0px #0002,
         4px 4px 5px 0px #0001;
+}
+
+.timer{
+    position: relative;
+    margin-top: 40px;
+    z-index: 3;
+    font-size: 35px;
+    margin-left: 55px;
+    color: white;
+    margin-top: 26px;
+}
+
+.naljasetting{
+    position:absolute;
+    width: 240px;
+    height: 20px;
+    background-color:#BFBFBF;
+    padding: 5px;
+    z-index: 2;
+    left: 10px;
+    top: 4px;
+    border-radius: 10px;
+    color: black;
+    text-align : center;
+}
+
+#sidebar {
+    margin: 0;
+    padding: 0;
+
+    ul,
+    li {
+        list-style: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+}
+
+
+#popupBtn {
+    display: none;
+}
+
+#popupBtn+label {
+    display: inline-block;
+    padding: 7px 14px;
+    cursor: pointer;
+    background-color: black;
+    color: #fff;
+    border-radius: 5px;
+}
+
+#layer {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#layer>#popup {
+    position: absolute;
+    float: left;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 15px;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 1000px;
+    background: #f3f2f8;
+}
+
+#layer>#popup>h2 {
+    margin-bottom: 15px;
+    margin-left: 10px;
+    color: #f3f2f8;
+}
+
+#layer>#popup>h2>label {
+    float: right;
+    margin-right: 20px;
+    color: black;
+}
+
+#popupBtn:checked+label+#layer {
+    display: block;
 }
