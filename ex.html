@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문서 작성 프로그램</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <section id="wrap">
+        <aside id="side">
+            <div class="sidebarh">
+                <div class="file-up">
+                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                    <label for="file" class="btn-open">Open</label>
+                    <input type="file" id="file">
+                </div>
+
+                <div class="time-section"> <!--타이머 설정 -->
+                    <label for="submitTime"></label>
+                    <input type="datetime-local" id="submitTime" name="submitTime">
+                    <button id="setTimeBtn">확인</button>
+                    <button id="stopTimeBtn">삭제</button>
+                    <div class="timer">남은 시간: <span id="timeLeft">--:--:--</span></div>
+                </div>
+            </div>
+            <!-- 메뉴 전체 -->
+            <div class="sidebar">왼쪽 메뉴</div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#">서론</a>
+                        <ul class="intro">
+                            <li><input type="checkbox"> 제목</li>
+                            <li><input type="checkbox"> 주제 선정 계기</li>
+                            <li><input type="checkbox"> 관련 단원</li>
+                        </ul>
+                    </li>
+
+                    <li><a href="#">본론</a>
+                        <ul class="mainbody">
+                            <li><input type="checkbox"> 사용된 개념 설명</li>
+                            <li><input type="checkbox"> 탐구 내용</li>
+                            <li><input type="checkbox"> 실생활 적용, 활용</li>
+                            <li><input type="checkbox"> 탐구 요약</li>
+                        </ul>
+                    </li>
+
+                    <li><a href="#">결론</a>
+                        <ul class="conclu">
+                            <li><input type="checkbox"> 어려웠던 점과 극복 과정</li>
+                            <li><input type="checkbox"> 깨닫게 된 점</li>
+                            <li><input type="checkbox"> 확장 탐구 및 다짐</li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <section id="content">
+            <div class="topbar">
+                <!-- 문서 제목 -->
+                <div class="namebar">
+                    <input type="text" id="docTitle" placeholder="문서 제목을 입력하세요">
+                    <button type="button" id="saveBtn">내보내기</button>
+                </div>
+            </div>
+
+            <nav class="skillbar">
+                <button type="button" title="굵게">B</button>
+                <button type="button" title="기울임">I</button>
+                <button type="button" title="밑줄">A</button>
+                <button type="button" title="형광펜">🖍️</button>
+
+            </nav>
+            <div class="document-area">
+                <textarea id="documentText" rows="250" cols="100" placeholder="여기에 내용을 입력하세요..."></textarea>
+            </div>
+
+        </section>
+    </section>
+    <script>
+        const submitTimeInput = document.getElementById("submitTime");
+        const setTimeBtn = document.getElementById("setTimeBtn");
+        const stopTimeBtn = document.getElementById("stopTimeBtn");
+        const timeLeftDisplay = document.getElementById("timeLeft");
+        let countdownInterval;
+
+        setTimeBtn.addEventListener("click", () => {
+            const selectedTime = new Date(submitTimeInput.value);
+            if (isNaN(selectedTime)) {
+                alert("유효한 시간을 선택하세요!");
+                return;
+            }
+
+            // 기존 타이머 있으면 제거
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            timeLeftDisplay.style.color = "black";
+
+            countdownInterval = setInterval(() => {
+                const now = new Date();
+                const diff = selectedTime - now;
+
+                if (diff <= 0) {
+                    clearInterval(countdownInterval);
+                    timeLeftDisplay.textContent = "제출 마감!";
+                    timeLeftDisplay.style.color = "red";
+                    return;
+                }
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                timeLeftDisplay.textContent =
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        });
+
+        stopTimeBtn.addEventListener("click", () => {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            submitTimeInput.value = "";
+            timeLeftDisplay.textContent = "--:--:--";
+            timeLeftDisplay.style.color = "black";
+        });
+
+    </script>
+</body>
+
+</html>
